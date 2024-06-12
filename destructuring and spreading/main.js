@@ -183,6 +183,6 @@ Add SQL without level to the data science skill sets
       // Add SQL without level to the data science skill sets
       newStudent.skills.dataScience.push('SQL');
       
-      console.log(newStudent);
+      console.log(JSON.stringify(newStudent,null,2));
       
     
