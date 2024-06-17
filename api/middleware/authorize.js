@@ -5,7 +5,6 @@ const authorize  = (req, res, next)=>{
     // get token from header
     // const token = req.header('token')
     const token = req.cookies.token
-    console.log("========>",token);
 
     if(!token){
         return res.status(403).json({

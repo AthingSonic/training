@@ -1,5 +1,4 @@
 const pool = require("../../db.js");
-const authorize = require("../../middleware/authorize.js");
 const jwtGenerator = require("../../utils/jwtGenerator.js");
 const query = require("./queries.js");
 const bcrypt = require("bcrypt");
@@ -29,7 +28,6 @@ const login = async (req, res) => {
 
     const jwtToken = jwtGenerator(student.rows[0].id);
 
-    // res.setHeader('token', jwtToken)
     return res.cookie("token", jwtToken, { httpOnly: true }).status(200).json({
       message: 'successfully logged in',
       student: student.rows[0],
@@ -55,7 +53,6 @@ const register = async (req, res) => {
   const salt = await bcrypt.genSalt(10);
   const bcryptPassword = await bcrypt.hash(password, salt);
 
-  //   check if email exists
   pool.query(query.checkEmailExists, [email], (error, results) => {
     if (error) {
       return res.status(500).json({
@@ -76,7 +73,6 @@ const register = async (req, res) => {
           let newStudent = results.rows[results.rows.length - 1];
           const jwtToken = jwtGenerator(newStudent.id);
           
-          // res.setHeader('token', jwtToken)
           return res.cookie("token", jwtToken, { httpOnly: true }).status(201).json({
             message: "Successfully added student",
             newStudent,
@@ -118,6 +114,27 @@ const getStudents = (req, res) => {
     }
   });
 };
+
+const getStudentsPagination = (req, res)=>{
+
+  const page = parseInt(req.body.page) || 1;
+  const pageSize = parseInt(req.body.pageSize) || 5;
+  const offset = (page - 1) * pageSize;
+
+  pool.query(query.paginatedQuery, [pageSize, offset], (error, results) => {
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
+
+    if (results.rowCount === 0) {
+      return res.status(200).json({
+        message: "No data availbale",
+      });
+    } else {
+      return res.status(200).json(results.rows);
+    }
+  });
+}
 
 const getStudentById = (req, res) => {
   const id = parseInt(req.params.id);
@@ -233,6 +250,7 @@ module.exports = {
   login,
   getStudents,
   getStudentById,
+  getStudentsPagination,
   deleteAllStudents,
   deleteStudentById,
   updateStudent,
