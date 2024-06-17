@@ -3,7 +3,8 @@ students(# ID SERIAL PRIMARY KEY,
 students(# name VARCHAR(255),
 students(# email VARCHAR(255),
 students(# age INT,
-students(# dob DATE);
+students(# dob DATE)
+tudents(# password VARCHAR(255));
 
 db name = students
 table name = students 
