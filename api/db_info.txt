@@ -1,0 +1,9 @@
+students=# CREATE TABLE students(
+students(# ID SERIAL PRIMARY KEY,
+students(# name VARCHAR(255),
+students(# email VARCHAR(255),
+students(# age INT,
+students(# dob DATE);
+
+db name = students
+table name = students 
