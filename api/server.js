@@ -14,8 +14,12 @@ app.use(cookieParser());
 app.get("/", (req, res) => {
   res.send("Home");
 });
-
+// students route
 app.use("/api/v1/students", studentRoutes);
+// Middleware to handle undefined routes
+app.use((req, res, next) => {
+  res.status(404).send("Route not found");
+});
 
 app.listen(port, () => {
   console.log(`server running on port: ${port}`);

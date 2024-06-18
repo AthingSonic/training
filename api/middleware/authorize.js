@@ -1,5 +1,4 @@
 const jwt  = require('jsonwebtoken')
-// require('dotenv').config()
 
 const authorize  = (req, res, next)=>{
     // get token from header
@@ -8,7 +7,7 @@ const authorize  = (req, res, next)=>{
 
     if(!token){
         return res.status(403).json({
-            message: "authorization denied"
+            message: "authorization denied, Login first"
         })
     }
 
