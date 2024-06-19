@@ -448,7 +448,6 @@ console.log(areAllSameType([])); // true (empty array is considered to have the 
 console.log(areAllSameType([null, null, null])); // true (all items are null, which is of type 'object')
 
 
-
 // JavaScript variable name does not support special characters or symbols except $ or _. Write a function isValidVariable which check if a variable is valid or invalid variable.
 console.log(`JavaScript variable name does not support special characters or symbols except $ or _. Write a function isValidVariable which check if a variable is valid or invalid variable.`);
 function isValidVariable(variableName) {
