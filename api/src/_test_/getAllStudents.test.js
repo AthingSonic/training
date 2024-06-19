@@ -1,63 +1,69 @@
-const request = require('supertest');
-const app = require('../../app.js');
-const pool = require('../../db.js'); 
-jest.mock('../../utils/jwtGenerator.js'); //jwt generator
-jest.mock('../../db.js'); //pool
+// const request = require("supertest");
+// const app = require("../../app.js");
+const pool = require("../../db.js");
+const { getStudents } = require("../student/controller.js");
+const query = require("../student/queries.js");
 
-describe('GET /get all student data', () => {
+jest.mock("../../utils/jwtGenerator.js"); //jwt generator
+jest.mock("../../db.js"); //pool
+
+describe("getStudents Controller", () => {
+  let req, res;
+
   beforeEach(() => {
+    req = {}; // No specific properties needed for this test
+    res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
+  });
+
+  afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it('should return 403 if user is not logged in', async () => {
-    const res = await request(app)
-      .get('/api/v1/students/')
-      .expect('Content-Type', /json/)
+  it("should return 200 and the students data when data is available", async () => {
+    const mockData = {
+      rowCount: 2,
+      rows: [
+        { id: 1, name: "John Doe" },
+        { id: 2, name: "Jane Smith" },
+      ],
+    };
 
-      expect(res.status).toEqual(403)
-      expect({
-        "message": "authorization denied, Login first"
-      })
+    pool.query.mockResolvedValue(mockData);
+
+    await getStudents(req, res);
+
+    expect(pool.query).toHaveBeenCalledWith(query.getStudents);
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledWith(mockData.rows);
   });
 
+  it("should return 404 when no data is available", async () => {
+    const mockData = {
+      rowCount: 0,
+      rows: [],
+    };
 
-  it('should return 404 no user data is found', async () => {
-    const res = await request(app)
-      .get('/api/v1/students/')
-      .expect('Content-Type', /json/)
+    pool.query.mockResolvedValue(mockData);
 
-      expect(res.status).toEqual(404)
-      expect({
-        message: "No data available",
-      })
+    await getStudents(req, res);
+
+    expect(pool.query).toHaveBeenCalledWith(query.getStudents);
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(res.json).toHaveBeenCalledWith({ message: "No data available" });
   });
 
-  it('should return 200 if operation is successfull', async () => {
-    const res = await request(app)
-      .get('/api/v1/students/')
-      .expect('Content-Type', /json/)
+  it("should return 500 when there is a server error", async () => {
+    const mockError = new Error("Database error");
 
-      expect(res.status).toEqual(200)
-      expect(
-        [
-          {
-              "id": 1,
-              "name": "wung",
-              "email": "wung@gmail.com",
-              "age": 25,
-              "dob": "1999-02-16T18:30:00.000Z",
-              "password": "$2b$10$/QJOotRdytud.5P/TRSZwOYUMFjJzKaaLwX/1We/CARExmQI0hXvu"
-          },
-          {
-              "id": 2,
-              "name": "athing",
-              "email": "athing@gmail.com",
-              "age": 25,
-              "dob": "1999-02-16T18:30:00.000Z",
-              "password": "$2b$10$pKRRnz4f8.7KCQ1jkxDoAOgCbDxSVRtTopF65nrkBkPpzV6x6sp9G"
-          }
-        ]
-      )
+    pool.query.mockRejectedValue(mockError);
+
+    await getStudents(req, res);
+
+    expect(pool.query).toHaveBeenCalledWith(query.getStudents);
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.json).toHaveBeenCalledWith({ error: mockError.message });
   });
-
 });
