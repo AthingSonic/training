@@ -2,15 +2,8 @@ const request = require('supertest');
 const app = require('../../app.js');
 const jwtGenerator = require('../../utils/jwtGenerator.js'); 
 const pool = require('../../db.js'); 
-// const bcrypt = require('bcryptjs');
-
-// const query = require('../../src/student/queries.js'); 
-
-// Mock functions or test database setup (if needed)
-// jest.mock('bcryptjs');
 jest.mock('../../utils/jwtGenerator.js'); //jwt generator
 jest.mock('../../db.js'); //pool
-// jest.mock('../../src/student/queries.js'); //queries
 
 describe('POST /register', () => {
   beforeEach(() => {
@@ -98,11 +91,8 @@ describe('POST /register', () => {
   });
 
   it('should successfully register a new student', async () => {
-    // Mock bcrypt and JWT token generation
-    // const mockHash = 'hashedpassword';
-    // bcrypt.genSalt.mockResolvedValue('salt');
-    // bcrypt.hash.mockResolvedValue(mockHash);
-    jwtGenerator.mockReturnValue('mockjwttoken');
+
+    // jwtGenerator.mockReturnValue('mockjwttoken');
 
     // Mock successful database queries
     pool.query.mockResolvedValueOnce({ rows: [] }); // Simulate email not existing
@@ -112,12 +102,12 @@ describe('POST /register', () => {
       .post('/api/v1/students/register')
       .send({
         name: 'John Doe',
-        email: 'john.doe@example123456.com',
+        email: 'john.doe@example.com',
         age: 30,
         dob: '1994-06-19',
         password: 'testpassword',
       })
-      // .expect('Content-Type', /json/);
+      .expect('Content-Type', /json/)
 
     expect(res.status).toEqual(201);
 
@@ -127,9 +117,26 @@ describe('POST /register', () => {
     //     id: 1,
     //     name: 'John Doe',
     //     email: 'john.doe@example.com',
+    //     age: 30,
+    //     dob: "1994-06-19T18:30:00.000Z",
+    //     password: "mockpasssword"
     //   },
     //   jwtToken: 'mockjwttoken',
     // });
+
+
+    expect({
+      message: 'Successfully added student',
+      newStudent: {
+        id: 1,
+        name: 'John Doe',
+        email: 'john.doe@example.com',
+        age: 30,
+        dob: "1994-06-19T18:30:00.000Z",
+        password: "mockpasssword"
+      },
+      jwtToken: 'mockjwttoken',
+    });
   });
 
   it('should handle server errors', async () => {
