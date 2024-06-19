@@ -137,7 +137,7 @@ const getStudents = async (req, res) => {
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
-};
+};  
 
 
 const getStudentsPagination = async (req, res) => {
