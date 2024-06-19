@@ -13,18 +13,33 @@ rl.question('Please enter a month: ', (input) => {
 
   let season = '';
 
-  if (month === "september" || month === "october" || month === "november") {
-    season = 'Autumn';
-  } else if (month === "december" || month === "january" || month === "february") {
-    season = 'Winter';
-  } else if (month === "march" || month === "april" || month === "may") {
-    season = 'Spring';
-  } else if (month === "june" || month === "july" || month === "august") {
-    season = 'Summer';
-  } else {
-    console.log('Please enter a valid month.');
-    rl.close();
-    return;
+  // if (month === "september" || month === "october" || month === "november") {
+  //   season = 'Autumn';
+  // } else if (month === "december" || month === "january" || month === "february") {
+  //   season = 'Winter';
+  // } else if (month === "march" || month === "april" || month === "may") {
+  //   season = 'Spring';
+  // } else if (month === "june" || month === "july" || month === "august") {
+  //   season = 'Summer';
+  // } else {
+  //   console.log('Please enter a valid month.');
+  //   rl.close();
+  //   return;
+  // }
+
+  switch(month){
+
+    case "september":
+    case "october":
+    case "november":
+      console.log("Autumn +++++++");
+      break;
+      
+    case "december":
+    case "january":
+    case "february":
+      console.log("Winter +++++++");
+      break;
   }
 
   console.log(`In ${input.trim()} the season is ${season}.`);

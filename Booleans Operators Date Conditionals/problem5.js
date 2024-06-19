@@ -25,6 +25,7 @@ rl.question('Please your score: ', (answer) => {
     }else if(marks >= 0 && marks <= 49){
         console.log(`marks: ${marks} grade: F`);
     }
-  }
+  }  
+  
   rl.close();
 });

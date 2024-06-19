@@ -1,6 +1,6 @@
 let countries = require("./countries.js");
 let web_techs = require("./web_techs.js");
-
+// let arr = []
 console.log("*****************first array*****************");
 let arr1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 console.log(`length of the array is: ${arr1.length}`);
@@ -38,6 +38,7 @@ let itCompanies = [
   "Oracle",
   "Amazon",
 ];
+console.table(itCompanies)
 console.log(itCompanies);
 console.log(`Number of companies in the array: ${itCompanies.length}`);
 console.log(`First company: ${itCompanies[0]}`);
@@ -104,6 +105,10 @@ console.log(
   itCompanies.slice(-3)
 );
 
+let midCompany = itCompanies[Math.floor(itCompanies.length/2)]
+const midValue = Math.floor(itCompanies.length/2)
+console.log(">>>",itCompanies.slice(midValue,midValue + 1));
+
 let newItComapnyArray = [];
 for (let i = 1; i < itCompanies.length; i++) {
   newItComapnyArray.push(itCompanies[i]);
@@ -120,6 +125,10 @@ for (let i = 0; i < itCompanies.length; i++) {
     newItComapnyArray2.push(itCompanies[i]);
   }
 }
+
+console.log(">>>>>", itCompanies);
+itCompanies.splice(4,1);
+console.log(">>>>>", itCompanies);
 console.log(
   `After removing the middle company from the array`,
   newItComapnyArray2
