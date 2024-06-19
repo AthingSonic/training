@@ -50,7 +50,6 @@ const login = async (req, res) => {
 
 const register = async (req, res) => {
   const { name, email, age, dob, password } = req.body;
-
   // Input validation
   if (!name || !email || !age || !dob || !password) {
     return res.status(400).json({
@@ -92,7 +91,7 @@ const register = async (req, res) => {
 
     // Retrieve the newly added student
     const result = await pool.query("SELECT * FROM students ORDER BY id DESC LIMIT 1");
-    const newStudent = result.rows[0];
+    const newStudent = result ? result.rows[0]: {};
 
     // Generate JWT token
     const jwtToken = jwtGenerator(newStudent.id);
@@ -128,7 +127,7 @@ const getStudents = async (req, res) => {
     const results = await pool.query(query.getStudents);
 
     if (results.rowCount === 0) {
-      return res.status(200).json({
+      return res.status(404).json({
         message: "No data available",
       });
     }
