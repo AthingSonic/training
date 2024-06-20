@@ -3,7 +3,6 @@ const jwtGenerator = require("../../utils/jwtGenerator.js");
 const query = require("./queries.js");
 const bcrypt = require("bcrypt");
 
-
 const login = async (req, res) => {
   const { email, password } = req.body;
 
@@ -16,13 +15,10 @@ const login = async (req, res) => {
 
   try {
     // Check if the student exists
-    const studentResult = await pool.query(
-      query.loginStudent,
-      [email]
-    );
+    const studentResult = await pool.query(query.loginStudent, [email]);
 
     if (studentResult.rows.length === 0) {
-      return res.status(404).json({ message: "Invalid email or password" });
+      return res.status(401).json({ message: "Invalid email or password" });
     }
 
     const student = studentResult.rows[0];
@@ -38,10 +34,10 @@ const login = async (req, res) => {
 
     // Set cookie and respond with student details and token
     return res
-      .cookie("token", jwtToken, { httpOnly: true})
+      .cookie("token", jwtToken, { httpOnly: true })
       .status(200)
       .json({
-        message: 'Successfully logged in',
+        message: "Successfully logged in",
         student: {
           id: student.id,
           email: student.email,
@@ -50,7 +46,7 @@ const login = async (req, res) => {
         jwtToken,
       });
   } catch (error) {
-    console.log('Login error:', error.message);
+    console.log("Login error:", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -97,8 +93,10 @@ const register = async (req, res) => {
     await pool.query(query.addStudent, [name, email, age, dob, bcryptPassword]);
 
     // Retrieve the newly added student
-    const result = await pool.query("SELECT * FROM students ORDER BY id DESC LIMIT 1");
-    const newStudent = result ? result.rows[0]: {};
+    const result = await pool.query(
+      "SELECT * FROM students ORDER BY id DESC LIMIT 1"
+    );
+    const newStudent = result ? result.rows[0] : {};
 
     // Generate JWT token
     const jwtToken = jwtGenerator(newStudent.id);
@@ -109,7 +107,6 @@ const register = async (req, res) => {
       newStudent,
       jwtToken,
     });
-
   } catch (error) {
     // Handle errors
     return res.status(500).json({
@@ -143,8 +140,7 @@ const getStudents = async (req, res) => {
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
-};  
-
+};
 
 const getStudentsPagination = async (req, res) => {
   try {
@@ -154,7 +150,12 @@ const getStudentsPagination = async (req, res) => {
 
     // Validate page and pageSize to ensure they are positive integers
     if (isNaN(page) || isNaN(pageSize) || page < 1 || pageSize < 1) {
-      return res.status(400).json({ error: "Invalid page or pageSize value. Both must be positive integers." });
+      return res
+        .status(400)
+        .json({
+          error:
+            "Invalid page or pageSize value. Both must be positive integers.",
+        });
     }
 
     const offset = (page - 1) * pageSize;
@@ -176,8 +177,7 @@ const getStudentsPagination = async (req, res) => {
       return res.status(500).json({ error: error.message });
     }
   }
-}
-
+};
 
 const getStudentById = async (req, res) => {
   const id = parseInt(req.params.id);
@@ -205,14 +205,13 @@ const getStudentById = async (req, res) => {
   }
 };
 
-
 const deleteStudentById = async (req, res) => {
   const id = parseInt(req.params.id);
 
   // Validate the ID parameter
   if (isNaN(id)) {
     return res.status(400).json({
-      error: 'Invalid student ID',
+      error: "Invalid student ID",
     });
   }
 
@@ -230,14 +229,11 @@ const deleteStudentById = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({
-      error: 'Database error',
+      error: "Database error",
       details: error.message,
     });
   }
 };
-
-
-
 
 const deleteAllStudents = async (req, res) => {
   try {
@@ -258,8 +254,6 @@ const deleteAllStudents = async (req, res) => {
     });
   }
 };
-
-
 
 const updateStudent = async (req, res) => {
   try {
@@ -296,16 +290,19 @@ const updateStudent = async (req, res) => {
     const results = await pool.query(query.updateStudentQuery(fields), values);
 
     if (results.rowCount === 0) {
-      return res.status(404).json({ message: `No student found with id: ${id}` });
+      return res
+        .status(404)
+        .json({ message: `No student found with id: ${id}` });
     }
 
-    res.status(200).json({ message: `Successfully updated student with id: ${id}` });
+    res
+      .status(200)
+      .json({ message: `Successfully updated student with id: ${id}` });
   } catch (error) {
     // Handle any errors that occur during the async operations
     res.status(500).json({ error: error.message });
   }
 };
-
 
 module.exports = {
   register,
@@ -316,5 +313,5 @@ module.exports = {
   deleteAllStudents,
   deleteStudentById,
   updateStudent,
-  logoutUser
+  logoutUser,
 };
