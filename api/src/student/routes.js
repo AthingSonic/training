@@ -9,7 +9,7 @@ router.get("/", controller.getStudents); //done test
 router.get("/getStudentsPagination", controller.getStudentsPagination); //done test
 router.get("/:id", controller.getStudentById); //done test
 router.delete("/deleteAllStudents", controller.deleteAllStudents);
-router.delete("/deleteStudentById/:id", controller.deleteStudentById);
+router.delete("/deleteStudentById/:id", controller.deleteStudentById); //done test
 router.patch("/updateStudent/:id", controller.updateStudent);
 
 module.exports = router;
