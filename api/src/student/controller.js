@@ -85,7 +85,7 @@ const register = async (req, res) => {
     const emailExists = await pool.query(query.checkEmailExists, [email]);
     if (emailExists.rows.length > 0) {
       return res.status(400).json({
-        message: `Email: ${email} already exists`,
+        message: `email already exists`,
       });
     }
 
@@ -150,12 +150,10 @@ const getStudentsPagination = async (req, res) => {
 
     // Validate page and pageSize to ensure they are positive integers
     if (isNaN(page) || isNaN(pageSize) || page < 1 || pageSize < 1) {
-      return res
-        .status(400)
-        .json({
-          error:
-            "Invalid page or pageSize value. Both must be positive integers.",
-        });
+      return res.status(400).json({
+        error:
+          "Invalid page or pageSize value. Both must be positive integers.",
+      });
     }
 
     const offset = (page - 1) * pageSize;
