@@ -4,8 +4,9 @@ const pool = require("../../db.js");
 const { getStudents } = require("../student/controller.js");
 const query = require("../student/queries.js");
 
-jest.mock("../../utils/jwtGenerator.js"); //jwt generator
+// jest.mock("../../utils/jwtGenerator.js"); //jwt generator?
 jest.mock("../../db.js"); //pool
+
 
 describe("getStudents Controller", () => {
   let req, res;
