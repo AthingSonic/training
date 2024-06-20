@@ -37,7 +37,7 @@ describe("Patch/ update student by id", () => {
   });
 
   test("it should return 200 if Succesfully updated student with id", async () => {
-    let id = 13; //give an id which exist
+    let id = 14; //give an id which exist
     const res = await request(app)
       .patch(`/api/v1/students/updateStudent/${id}`)
       .send({
@@ -45,7 +45,7 @@ describe("Patch/ update student by id", () => {
         age: 26,
         dob: "1998-02-17",
       });
-    console.log(res.body);
+    // console.log(res.body);
 
     // if (res.statusCode === 200) {
     expect(res.statusCode).toBe(200);

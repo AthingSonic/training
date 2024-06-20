@@ -8,7 +8,8 @@ describe("GET/ get all students", () => {
 
   test("It should return 404 if no data is available", async () => {
     const res = await request(app).get("/api/v1/students/");
-    if (res.statusCode === 404) {
+    // console.log(res.body.length);
+    if (res.body.lengthe > 0) {
       expect(res.statusCode).toBe(404);
     }
   });

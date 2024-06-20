@@ -1,7 +1,7 @@
 const request = require("supertest");
 const app = require("../../app.js");
 
-describe("GET/ get all students", () => {
+describe("DELETE/ delete student by id", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -28,7 +28,7 @@ describe("GET/ get all students", () => {
   });
 
   test("it should get 204 if Succesfully deleted student with id", async () => {
-    let id = 13; //give an id which exist
+    let id = 14; //give an id which exist
     const res = await request(app).delete(
       `/api/v1/students/deleteStudentById/${id}`
     );

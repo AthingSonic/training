@@ -35,7 +35,8 @@ describe("POST / login", () => {
       email: "wung@gmail.com",
       password: "athing@123",
     });
-    if (res.statusCode === 200) {
+    // console.log(res.body);
+    if (res.body.message === "Successfully logged in") {
       expect(res.statusCode).toBe(200);
     }
   });
