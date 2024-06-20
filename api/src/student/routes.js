@@ -10,6 +10,6 @@ router.get("/getStudentsPagination", controller.getStudentsPagination); //done t
 router.get("/:id", controller.getStudentById); //done test
 router.delete("/deleteAllStudents", controller.deleteAllStudents);
 router.delete("/deleteStudentById/:id", controller.deleteStudentById); //done test
-router.patch("/updateStudent/:id", controller.updateStudent);
+router.patch("/updateStudent/:id", controller.updateStudent); //done test
 
 module.exports = router;

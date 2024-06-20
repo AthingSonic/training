@@ -23,7 +23,7 @@ describe("GET/ get student by id", () => {
   });
 
   test("it should return 200 if  student Succesfully fetched", async () => {
-    let id = 11; //give an id which exist
+    let id = 13; //give an id which exist
     const res = await request(app).get(`/api/v1/students/${id}`);
 
     // if (res.statusCode === 200) {
