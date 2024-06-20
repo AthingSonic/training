@@ -222,7 +222,7 @@ const deleteStudentById = async (req, res) => {
       });
     }
 
-    res.status(200).json({
+    res.status(204).json({
       message: `Successfully deleted student with ID: ${id}`,
     });
   } catch (error) {
