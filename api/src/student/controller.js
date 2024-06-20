@@ -7,15 +7,22 @@ const bcrypt = require("bcrypt");
 const login = async (req, res) => {
   const { email, password } = req.body;
 
+  if (!email || !password) {
+    return res.status(400).json({
+      message: "Please fill all the required details",
+      data: req.body,
+    });
+  }
+
   try {
     // Check if the student exists
     const studentResult = await pool.query(
-      "SELECT * FROM students WHERE email = $1",
+      query.loginStudent,
       [email]
     );
 
     if (studentResult.rows.length === 0) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res.status(404).json({ message: "Invalid email or password" });
     }
 
     const student = studentResult.rows[0];
@@ -23,7 +30,7 @@ const login = async (req, res) => {
     // Verify the password
     const isPasswordValid = await bcrypt.compare(password, student.password);
     if (!isPasswordValid) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res.status(401).json({ message: "Invalid email or password" });
     }
 
     // Generate JWT token
@@ -43,7 +50,7 @@ const login = async (req, res) => {
         jwtToken,
       });
   } catch (error) {
-    console.error('Login error:', error.message);
+    console.log('Login error:', error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };

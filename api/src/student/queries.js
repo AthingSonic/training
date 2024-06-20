@@ -8,6 +8,7 @@ const addStudent =
   "INSERT INTO students (name, email, age, dob, password) VALUES ($1, $2, $3, $4, $5)";
 const deleteAllStudents = "DELETE FROM students";
 const deleteStudentById = "DELETE FROM students WHERE id = $1";
+const loginStudent = "SELECT * FROM students WHERE email = $1"
 // Function to generate the dynamic update SQL query
 const updateStudentQuery = (fields) => {
   const setClause = fields
@@ -21,6 +22,7 @@ module.exports = {
   getStudentById,
   checkEmailExists,
   addStudent,
+  loginStudent,
   deleteAllStudents,
   deleteStudentById,
   updateStudentQuery,
