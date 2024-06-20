@@ -163,7 +163,7 @@ const getStudentsPagination = async (req, res) => {
 
     // Check if there are no results
     if (results.rowCount === 0) {
-      return res.status(200).json({ message: "No data available" });
+      return res.status(404).json({ message: "No data available" });
     }
 
     // Return the results
