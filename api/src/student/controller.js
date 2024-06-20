@@ -85,7 +85,7 @@ const register = async (req, res) => {
     const emailExists = await pool.query(query.checkEmailExists, [email]);
     if (emailExists.rows.length > 0) {
       return res.status(400).json({
-        message: `email already exists`,
+        message: "email already exists",
       });
     }
 

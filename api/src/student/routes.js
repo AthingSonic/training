@@ -3,7 +3,7 @@ const router = require("express").Router();
 const controller = require("./controller.js");
 
 router.post("/login", controller.login); //done test
-router.post("/register", controller.register);
+router.post("/register", controller.register); //done
 router.post("/logout", controller.logoutUser);
 router.get("/", controller.getStudents); //done test
 router.get("/getStudentsPagination", controller.getStudentsPagination);
