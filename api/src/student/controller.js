@@ -136,7 +136,9 @@ const getStudents = async (req, res) => {
       });
     }
 
-    return res.status(200).json(results.rows);
+    return res.status(200).json({
+      message: 'successfully fetched all students',
+      data: results.rows});
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -209,7 +211,7 @@ const deleteStudentById = async (req, res) => {
   // Validate the ID parameter
   if (isNaN(id)) {
     return res.status(400).json({
-      error: "Invalid student ID",
+      message: "Invalid student ID",
     });
   }
 
@@ -218,12 +220,12 @@ const deleteStudentById = async (req, res) => {
 
     if (results.rowCount === 0) {
       return res.status(404).json({
-        message: `No student found with ID: ${id}`,
+        message: `No student found with id`,
       });
     }
 
     res.status(204).json({
-      message: `Successfully deleted student with ID: ${id}`,
+      message: `Successfully deleted student`,
     });
   } catch (error) {
     res.status(500).json({
@@ -238,11 +240,11 @@ const deleteAllStudents = async (req, res) => {
     const results = await pool.query(query.deleteAllStudents);
 
     if (results.rowCount === 0) {
-      return res.json({
+      return res.status(404).json({
         message: "Empty table, no data to delete",
       });
     } else {
-      return res.status(200).json({
+      return res.status(204).json({
         message: "Successfully deleted all students from the table",
       });
     }

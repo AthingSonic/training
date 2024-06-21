@@ -37,7 +37,7 @@ describe("Patch/ update student by id", () => {
   });
 
   test("it should return 200 if Succesfully updated student with id", async () => {
-    let id = 14; //give an id which exist
+    let id = 11; //give an id which exist
     const res = await request(app)
       .patch(`/api/v1/students/updateStudent/${id}`)
       .send({
