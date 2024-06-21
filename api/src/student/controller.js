@@ -117,11 +117,20 @@ const register = async (req, res) => {
 
 const logoutUser = async (req, res) => {
   try {
+    const token = req.cookies.token;
+
+    if (!token) {
+      // If token cookie is not set or empty
+      return res.status(401).send({
+        message: "Token cookie is empty or not set.",
+      });
+    }
+
     /* maxAge is the age of the cookie which is one milisecond, and removing the token value with empty string '' */
     res.cookie("token", "", { maxAge: 1 });
     return res.status(200).json({ message: "Succesfully logged out" });
   } catch (error) {
-    return res.status(200).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
     // next(createError(500, "Error logging out user"));
   }
 };
@@ -137,8 +146,9 @@ const getStudents = async (req, res) => {
     }
 
     return res.status(200).json({
-      message: 'successfully fetched all students',
-      data: results.rows});
+      message: "successfully fetched all students",
+      data: results.rows,
+    });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -169,7 +179,10 @@ const getStudentsPagination = async (req, res) => {
     }
 
     // Return the results
-    return res.status(200).json(results.rows);
+    return res.status(200).json({
+      message: "successfully fetched data",
+      data: results.rows,
+    });
   } catch (error) {
     if (error instanceof SyntaxError) {
       return res.status(400).json({ error: "Invalid JSON payload" });

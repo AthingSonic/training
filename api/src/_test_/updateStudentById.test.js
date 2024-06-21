@@ -6,6 +6,16 @@ describe("Patch/ update student by id", () => {
     jest.clearAllMocks();
   });
 
+  test('It should return 403 if student is not logged in', async ()=>{
+    const res = await request(app).get('/api/v1/students/')
+
+    // console.log(res.body);
+    if(res.body.message === 'authorization denied, Login first'){
+      expect(res.statusCode).toBe(403)
+    }
+    
+  })
+
   test("it should return 400 if no fields are provided for update", async () => {
     let id = 9; //give an id which exist
     const res = await request(app)
@@ -13,9 +23,9 @@ describe("Patch/ update student by id", () => {
       .send({});
     // console.log(res.body);
 
-    // if (res.statusCode === 400) {
+    if (res.body.message === 'No fields provided for update') {
     expect(res.statusCode).toBe(400);
-    // }
+    }
   });
 
   test("it should return 404 if no student found with id", async () => {
@@ -31,9 +41,9 @@ describe("Patch/ update student by id", () => {
       });
     // console.log(res.body);
 
-    // if (res.statusCode === 404) {
+    if (res.body.message === `No student found with id: ${id}`) {
     expect(res.statusCode).toBe(404);
-    // }
+    }
   });
 
   test("it should return 200 if Succesfully updated student with id", async () => {
@@ -47,8 +57,8 @@ describe("Patch/ update student by id", () => {
       });
     // console.log(res.body);
 
-    // if (res.statusCode === 200) {
+    if (res.body.message === `Successfully updated student with id: ${id}`) {
     expect(res.statusCode).toBe(200);
-    // }
+    }
   });
 });

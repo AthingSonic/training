@@ -6,15 +6,15 @@ describe("GET/ get all students", () => {
     jest.clearAllMocks();
   });
 
-  // test('It should return 403 if student is not logged in', async ()=>{
-  //   const res = await request(app).get('/api/v1/students/')
+  test('It should return 403 if student is not logged in', async ()=>{
+    const res = await request(app).get('/api/v1/students/')
 
-  //   // console.log(res.body);
-  //   if(res.body.message === 'authorization denied, Login first'){
-  //     expect(res.statusCode).toBe(403)
-  //   }
+    // console.log(res.body);
+    if(res.body.message === 'authorization denied, Login first'){
+      expect(res.statusCode).toBe(403)
+    }
     
-  // })
+  })
 
   test("It should return 404 if no data is available", async () => {
     const res = await request(app).get("/api/v1/students/");

@@ -5,7 +5,17 @@ describe("GET/ get student by id", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
+  
+  test('It should return 403 if student is not logged in', async ()=>{
+    const res = await request(app).get('/api/v1/students/')
 
+    // console.log(res.body);
+    if(res.body.message === 'authorization denied, Login first'){
+      expect(res.statusCode).toBe(403)
+    }
+    
+  })
+  
   test("it should return 400 if invalid id", async () => {
     let id = "one"; //intentionalyy giving an invalid id
     const res = await request(app).get(`/api/v1/students/${id}`);
