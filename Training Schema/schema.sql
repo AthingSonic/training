@@ -29,3 +29,9 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA my_schema GRANT ALL PRIVILEGES ON TABLES TO r
 -- Step 5: Assign roles to the users
 GRANT readonly TO readonly_user;
 GRANT readwrite TO readwrite_user;
+
+-- to use the new schema
+SET search_path TO my_schema;
+-- show the current schema 
+SHOW search_path;
+
