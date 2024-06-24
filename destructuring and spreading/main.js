@@ -75,7 +75,8 @@ users.forEach(user => {
     console.log(keys);
   });
   
-
+// let obj = Object.keys(0)
+console.log('>>', users[0]);
 //   Find the persons who have less than two skills
 console.log(`Find the persons who have less than two skills`);
 const personsWithLessThanTwoSkills = users.filter(user => user.skills.length < 2);
