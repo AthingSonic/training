@@ -1,8 +1,9 @@
 import { Router } from "express";
-import * as controller from './controller'
+import * as controller from "./controller";
 
-let router = Router()
+let router = Router();
 
-router.post('/register', controller.register)
+router.post("/register", controller.register);
+router.get("/", controller.getStudents);
 
-export default router
+export default router;

@@ -1,11 +1,13 @@
-
 import jwtGenerator from "../utils/jwtGenerator";
 import * as queries from "./queries";
 import bcrypt from "bcrypt";
 import { Request, Response } from "express";
 import pool from "../db";
 
-export const register = async (req: Request, res: Response) => {
+export const register = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
   const { name, email, age, dob, password } = req.body;
 
   //  input validation
@@ -70,6 +72,30 @@ export const register = async (req: Request, res: Response) => {
   } catch (error: any) {
     return res.status(500).json({
       message: error.message,
+    });
+  }
+};
+
+export const getStudents = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const results = await pool.query(queries.getStudents);
+
+    if (results.rows.length <= 0) {
+      return res.status(404).json({
+        message: "No data available",
+      });
+    }
+
+    return res.status(200).json({
+      message: "successfully fetched all students",
+      data: results.rows,
+    });
+  } catch (error: any) {
+    return res.status(500).json({
+      error: error.message,
     });
   }
 };
