@@ -121,7 +121,7 @@ const logoutUser = async (req, res) => {
 
     if (!token) {
       // If token cookie is not set or empty
-      return res.status(401).send({
+      return res.status(401).json({
         message: "Token cookie is empty or not set.",
       });
     }
