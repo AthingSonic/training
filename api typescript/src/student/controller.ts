@@ -3,6 +3,14 @@ import * as queries from "./queries";
 import bcrypt from "bcrypt";
 import { Request, Response } from "express";
 import pool from "../db";
+// import * as Yup from "yup";
+
+// const loginSchema = Yup.object().shape({
+//   email: Yup.string()
+//     .email("Invalid email format")
+//     .required("Email is required"),
+//   password: Yup.string().required("Password is required"),
+// });
 
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -15,6 +23,13 @@ export const login = async (req: Request, res: Response) => {
   }
 
   try {
+
+    // const yupErrors = await loginSchema.validate({ email, password }, { abortEarly: false })
+    // const yupErrors = await loginSchema.validate({ email, password })
+    // if(yupErrors){
+    //   return res.status(400).json({ message: yupErrors });
+    // }
+
     // check if the student exists
     const studentResult = await pool.query(queries.loginStudent, [email]);
 
@@ -48,7 +63,15 @@ export const login = async (req: Request, res: Response) => {
       });
   } catch (error: any) {
     console.log("Login error:", error.message);
-    res.status(500).json({ error: "Internal Server Error" });
+
+    // if (error instanceof Yup.ValidationError) {
+    //   const errors = error.inner.map((err) => ({
+    //     path: err.path,
+    //     message: err.message,
+    //   }));
+    // }
+
+   return res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -116,7 +139,7 @@ export const register = async (
     }
 
     // add new student
-    await pool.query(queries.addStudent, [
+    const studentObj = await pool.query(queries.addStudent, [
       name,
       email,
       age,
