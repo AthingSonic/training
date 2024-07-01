@@ -4,9 +4,23 @@ import authorize from "../middleware/authorize";
 import validate from "../middleware/validateRequests";
 import createUserSchema from "../dto/loginSchema.schema";
 import registerSchema from "../dto/registerSchema.shcema";
+import multer, { Multer } from "multer";
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+});
+
+// const upload:Multer = multer({dest: 'uploads/'})
+
+const upload: Multer = multer({ storage });
 
 let router = Router();
-
+router.post("/uploadFile", upload.single("file"), controller.uploadFile);
 router.post("/login", validate(createUserSchema), controller.login);
 router.post("/logout", controller.logoutUser);
 router.post("/register", validate(registerSchema), controller.register);

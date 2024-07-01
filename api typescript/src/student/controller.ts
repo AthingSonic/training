@@ -23,7 +23,6 @@ export const login = async (req: Request, res: Response) => {
   }
 
   try {
-
     // const yupErrors = await loginSchema.validate({ email, password }, { abortEarly: false })
     // const yupErrors = await loginSchema.validate({ email, password })
     // if(yupErrors){
@@ -71,7 +70,7 @@ export const login = async (req: Request, res: Response) => {
     //   }));
     // }
 
-   return res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -362,6 +361,16 @@ export const deleteAllStudents = async (
         message: "Successfully deleted all students from the table",
       });
     }
+  } catch (error: any) {
+    return res.status(500).json({
+      error: error.message,
+    });
+  }
+};
+
+export const uploadFile = async (req: Request, res: Response) => {
+  try {
+    return res.status(201).json(req.file);
   } catch (error: any) {
     return res.status(500).json({
       error: error.message,
